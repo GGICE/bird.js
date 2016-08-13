@@ -14,10 +14,12 @@
   "scripts": {
     "build": "webpack -p --progress --profile --colors",
     "dev": "webpack-dev-server --hot --progress --profile --colors",
-    "lintJs": "eslint src/**/*.js"
+    "lintJs": "eslint src/**/*.js",
+    "gitAdd": "git add ."
   },
   "pre-commit": [
     "lintJs",
-    "build"
+    "build",
+    "gitAdd"
   ]
 }
