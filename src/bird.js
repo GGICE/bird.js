@@ -1,1 +1,8 @@
-console.log('Hello Bird.js')
+var Bird
+
+Bird = {
+  template: '',
+  data: {}
+}
+
+export default Bird
