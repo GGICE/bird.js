@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     bird: "./src/bird.ts",
-    test: "./test/test.js"
+    test: "./test/test.tsv gvv cbxzncdsnsdfmdsn"
   },
   output: {
     path: __dirname,
@@ -9,11 +9,6 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader"
-      },
       { 
         test: /\.tsx?$/, 
         loader: 'ts-loader'
