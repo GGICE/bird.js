@@ -1,22 +1,24 @@
-var Bird
-
-Bird = {
+class Bird {
+  constructor(options: {el: string, template: string}) {
+    var wrap = document.querySelector(options.el)
+    wrap.innerHTML = options.template
+  }
+  
+  component(name: string, options: Object) {
+    console.log(options)
+  }
+  
   create(options) {
-    var { template, el , data } = options
-
-//    this.wrap =  document.querySelect(el)
-    this.template = template
-    this.el = el
-    this.data = data
-
-    this.parse()
-    this.apply()
-  },
-  parse() {
-
-  },
-  apply() {
     
+  }
+  
+  parse() {
+     
+  }
+  
+  hello() {
+    console.log('Hello bird.js')
+    console.log(this)
   }
 }
 
