@@ -1,11 +1,14 @@
 module.exports = {
   entry: {
-    bird: "./src/bird.ts",
+    bird: "./src/Bird.ts",
     test: "./test/test.ts"
   },
   output: {
     path: __dirname,
     filename: "./dist/[name].js"
+  },
+  resolve: {
+    extensions: ["", ".js", ".ts"],
   },
   module: {
     loaders: [

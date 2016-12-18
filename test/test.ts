@@ -1,10 +1,19 @@
-import Bird from '../src/bird.ts'
+import Bird from '../src/Bird'
 var App = new Bird({
-  template: `<user-list>user-list<user-list>`,
+  template: `
+    <hello-text></hello-text>
+    <user-list>user-list<user-list>
+  `,
   el: '#app'
 })
 
-App.hello()
+App.component('hello-text', {
+  template: `<b-model text={text}>HELLO</b-model>`,
+  data: {
+    text: 'Hello Bird.js'
+  }
+})
+
 App.component('user-list', {
   template: `<b-for>LIST</b-for>`,
   data: {
