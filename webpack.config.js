@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    bird: "./src/Bird.ts",
+    // bird: "./src/Bird.ts",
     test: "./test/test.ts"
   },
   output: {
