@@ -1,14 +1,14 @@
 import Bird from '../src/Bird'
 var App = new Bird({
   template: `
-    <hello-text></hello-text>
+    <b-text text={"HelloWord"}></b-text>
     <user-list>user-list<user-list>
   `,
   el: '#app'
 })
 
 App.component('hello-text', {
-  template: `<b-model text={text}>HELLO</b-model>`,
+  template: `<b-text text={text}>HELLO</b-text>`,
   data: {
     text: 'Hello Bird.js'
   }

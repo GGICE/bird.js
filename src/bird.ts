@@ -1,4 +1,5 @@
 import Parse from './Parse'
+import Text from './Text'
 
 class Bird {
   constructor(options: {el: string, template: string}) {
@@ -23,5 +24,7 @@ class Bird {
     
   }
 }
+
+Text()
 
 export default Bird
