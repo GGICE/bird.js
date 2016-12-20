@@ -1,11 +1,11 @@
-import Parse from './Parse'
 import Text from './Text'
 
 class Bird {
   constructor(options: {el: string, template: string}) {
     var wrap = document.querySelector(options.el)
     
-    wrap.innerHTML = this.parse(options.template)
+    wrap.innerHTML = options.template
+    this.randers()
   }
 
   components = []
@@ -18,13 +18,11 @@ class Bird {
     console.log(this.components)
   }
   
-  parse = new Parse().parse
-
   randers() {
-    
+    (<any>document).registerElement('b-text', Text);
   }
 }
 
-Text()
+
 
 export default Bird

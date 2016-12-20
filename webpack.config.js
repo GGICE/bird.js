@@ -1,7 +1,6 @@
 module.exports = {
   entry: {
-    // bird: "./src/Bird.ts",
-    test: "./test/test.ts"
+    test: "./debug/debug.ts"
   },
   output: {
     path: __dirname,

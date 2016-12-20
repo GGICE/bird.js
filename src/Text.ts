@@ -1,6 +1,12 @@
-export default function(){
-  var TextProto: any = Object.create(HTMLElement.prototype)
-  TextProto.createdCallback = function() {
+class Text extends HTMLElement {
+  constructor() {
+    super()
+  }
+
+  createShadowRoot
+
+  createdCallback() {
+    console.log(this)
     var shadow = this.createShadowRoot()
     shadow.innerHTML = this.getAttribute('text')
 
@@ -8,16 +14,19 @@ export default function(){
       this.setAttribute('text', 'haha')
     }, 2000)
   }
-  TextProto.attachedCallback = function() {
+
+  attachedCallback() {
     console.log('attachedCallback')
   }
-  TextProto.detachedCallback = function() {
+  
+  detachedCallback() {
     console.log('detachedCallback')
   }
-  TextProto.attributeChangedCallback = function(name, oldVal , newVal) {
-    console.log(name, oldVal, newVal)
+
+  attributeChangedCallback(name, oldVal, newVal) {
+     console.log(name, oldVal, newVal)
   }
-  var Text = (<any>document).registerElement('b-text', {
-    prototype : TextProto
-  })
+
 }
+
+export default Text
