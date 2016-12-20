@@ -5,11 +5,10 @@ class Text extends HTMLElement {
 
   createShadowRoot
 
-  createdCallback() {
-    console.log(this)
-    var shadow = this.createShadowRoot()
-    shadow.innerHTML = this.getAttribute('text')
+  _shadow
 
+  createdCallback() {
+    this._rander()
     setTimeout(()=>{
       this.setAttribute('text', 'haha')
     }, 2000)
@@ -24,7 +23,16 @@ class Text extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-     console.log(name, oldVal, newVal)
+    console.log(name, oldVal, newVal)
+    this._rander()
+  }
+
+  _rander() {
+    if(!this._shadow) {
+      console.log('Create new shadow!')
+      this._shadow = this.createShadowRoot()
+    }
+    this._shadow.innerHTML = this.getAttribute('text')
   }
 
 }

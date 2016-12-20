@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    test: "./debug/debug.ts"
+    debug: "./debug/debug.ts"
   },
   output: {
     path: __dirname,
