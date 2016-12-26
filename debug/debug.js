@@ -1,8 +1,7 @@
-import Bird from '../src/Bird'
 var App = new Bird({
   template: `
-    <b-text text={"HelloWord"}></b-text>
-    <user-list>user-list<user-list>
+    <hello-text text={"HelloWord"}>1</hello-text>
+    <user-list>2</user-list>
   `,
   el: '#app'
 })
@@ -22,7 +21,7 @@ App.component('user-list', {
       age: 20
     },
     {
-      name: 'test1',
+      name: 'test3',
       age: 21
     }]
   }
