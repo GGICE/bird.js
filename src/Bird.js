@@ -1,4 +1,5 @@
 import Base from './Base'
+import Text from './Text'
 
 class Bird {
   constructor(options) {
@@ -9,17 +10,25 @@ class Bird {
   }
 
   component(name, options) {
-    var { template } = options
+    var { template, data } = options
     class Temp extends Base {
       getTemplate() {
         return template
+      }
+
+      getData() {
+        return data
+      }
+
+      _rander() {
+        this.innerHTML = this.getTemplate()
       }
     }
     document.registerElement(name, Temp)
   }
 
   randers() {
-    document.registerElement('b-base', Base)
+    document.registerElement('b-text', Text)
   }
 }
 
