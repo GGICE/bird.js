@@ -23,30 +23,50 @@ class Base extends HTMLElement {
   }
 
   _init() {
-    var { getTemplate, getData } = this
+    const options = this.getOptions()
+    const { template , data } = options
 
     this._shadow = this.createShadowRoot()
-    if(!getTemplate) {
+    if(!template) {
       this.template = null
       console.warn('No template!')
     } else {
-      this.template = getTemplate()
+      this.template = template
     }
-    if(!getData) {
+    if(!data) {
       this.data = null
       console.warn('No data!')
     } else {
-      this.data = getData()
+      this.data = data
     }
+
   }
 
+  /**
+   * 模板引擎
+   */
   _parse() {
-
+    const { template, data } = this
+    var html = template.replace(/{\w*}/g, function($1){
+      var key = $1.match(/\w+/)[0]
+      if(data[key]) {
+        return '${data.' + key + '}'
+      } else {
+        return ''
+      }
+    })
+    html = '`' + html + '`'
+    try {
+      html = eval(html)
+    } catch(e) {
+      window.console.warn(e)
+    }
+    console.log('html', html)
+    return html
   }
 
   _rander() {
-    console.log(this)
-    this._shadow.innerHTML = this.template
+    this._shadow.innerHTML = this._parse()
   }
 
 }

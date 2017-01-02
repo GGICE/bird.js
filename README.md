@@ -1,2 +1,2 @@
 # bird.js
-a mvvm lib.
+a web components lib.
