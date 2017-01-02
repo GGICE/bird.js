@@ -75,19 +75,27 @@ class Base extends HTMLElement {
 
   /**
    * 模板引擎
+   * TODO 需要优化匹配
    */
   _parse() {
     const { template, data } = this
-    var html = template.replace(/{\w*}/g, function($1){
-      var key = $1.match(/\w+/)[0]
+    var html = template.replace(/\s*/g, '')
+    html = template.replace(/{[\w+\.*\w+]+}/g, function($1){
+      var key = $1.match(/{(\S*)}/)[1]
       if(typeof data[key] === 'function') {
         return 'function[' + key + ']'
       }
       if(data[key]) {
-        return '${data.' + key + '}'
+        return 'b@@##data.' + key + '}'
+      }
+      if(key.indexOf('.') !== -1) {
+        return 'b@@##' + key + '}'
       }
       return ''
     })
+    html = html.replace(/"/g, '`')
+    html = html.replace(/{/g, '${data.')
+    html = html.replace(/b@@##/g, '${')
     html = '`' + html + '`'
     try {
       html = eval(html)

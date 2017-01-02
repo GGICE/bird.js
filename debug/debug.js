@@ -5,17 +5,16 @@ var App = new Bird({
     <p>List: </p>
     <user-list>2</user-list>
     <p>Input: </p>
-    <b-input></b-input>
+    <text-input></text-input>
   `,
   el: '#app'
 })
 
 App.component('hello-text', {
-  template: `<div data-test={test}>{text}</div>`,
+  template: `<div>{text}</div>`,
   created() {
     var that = this
     setTimeout(function(){
-      console.log('that', that)
       that.setData({
         text: '我发生变化了 haha!'
       })
@@ -37,9 +36,15 @@ App.component('hello-text', {
 })
 
 App.component('user-list', {
-  template: `<div>This will a List</div>`,
+  template: `
+  <div>
+    {users.map(user => "
+      <p>我叫{user.name}, 年龄{user.age}</p>
+    ").join('')}
+  <div>
+  `,
   data: {
-    list: [{
+    users: [{
       name: 'test',
       age: 20
     },
@@ -50,7 +55,7 @@ App.component('user-list', {
   }
 })
 
-App.component('b-input', {
+App.component('text-input', {
   template: `<div>
               <input on-keyup={inputChange}>
               <div>{result}</div>
@@ -58,7 +63,6 @@ App.component('b-input', {
 
   data: {
     inputChange(e) {
-      console.log(e)
       this.setData({
         result: e.target.value
       })
