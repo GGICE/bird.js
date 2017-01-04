@@ -12,6 +12,12 @@ var App = new Bird({
 
 App.component('hello-text', {
   template: `<div>{text}</div>`,
+  styles: `
+    div {
+      color: red;
+      font-size: 17px;
+    }
+  `,
   created() {
     var that = this
     setTimeout(function(){

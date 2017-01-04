@@ -30,7 +30,7 @@ class Base extends HTMLElement {
 
   _init() {
     const options = this.getOptions()
-    const { template , data, created } = options
+    const { template , data, created, styles } = options
 
     this._tempShadow = document.createElement('div').createShadowRoot()
     this._shadow = this.createShadowRoot()
@@ -46,7 +46,7 @@ class Base extends HTMLElement {
     } else {
       this.data = data
     }
-
+    this._styles = styles
     this._bind()
     created && created.apply(this)
   }
@@ -78,7 +78,7 @@ class Base extends HTMLElement {
    * TODO 需要优化匹配
    */
   _parse() {
-    const { template, data } = this
+    const { template, data, _styles } = this
     var html = template.replace(/\s*/g, '')
     html = template.replace(/{[\w+\.*\w+]+}/g, function($1){
       var key = $1.match(/{(\S*)}/)[1]
@@ -101,6 +101,9 @@ class Base extends HTMLElement {
       html = eval(html)
     } catch(e) {
       window.console.warn(e)
+    }
+    if(_styles) {
+      html = '<style>' + _styles + '</style>' + html
     }
     return html
   }
