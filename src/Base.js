@@ -7,7 +7,7 @@ class Base extends HTMLElement {
 
   createdCallback() {
     this._init()
-    this._rander()
+    this._render()
   }
 
   attachedCallback() {
@@ -24,7 +24,7 @@ class Base extends HTMLElement {
 
   attributeChangedCallback(name, oldVal, newVal) {
     const { attributeChanged } = this
-    this._reRander(name)
+    this._reRender(name)
     attributeChanged && attributeChanged.apply(this, name, oldVal, newVal)
   }
 
@@ -108,12 +108,12 @@ class Base extends HTMLElement {
     return html
   }
 
-  _rander() {
+  _render() {
     this._shadow.innerHTML = this._parse()
     this._bindEvents()
   }
 
-  _reRander() {
+  _reRender() {
     this._tempShadow.innerHTML = this._parse()
     this._diff(this._tempShadow, this._shadow)
   }
@@ -140,7 +140,7 @@ class Base extends HTMLElement {
   }
 
   /**
-   * 绑定事件的方法，需要在rander之后执行
+   * 绑定事件的方法，需要在render之后执行
    */
   _bindEvents() {
     var els = this._shadow
