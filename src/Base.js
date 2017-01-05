@@ -30,7 +30,7 @@ class Base extends HTMLElement {
 
   _init() {
     const options = this.getOptions()
-    const { template , data, created, styles } = options
+    const { template , data, created, styles, rendered } = options
 
     this._tempShadow = document.createElement('div').createShadowRoot()
     this._shadow = this.createShadowRoot()
@@ -47,6 +47,7 @@ class Base extends HTMLElement {
       this.data = data
     }
     this._styles = styles
+    this._rendered = rendered
     this._bind()
     created && created.apply(this)
   }
@@ -111,11 +112,13 @@ class Base extends HTMLElement {
   _render() {
     this._shadow.innerHTML = this._parse()
     this._bindEvents()
+    this._rendered && this._rendered()
   }
 
   _reRender() {
     this._tempShadow.innerHTML = this._parse()
     this._diff(this._tempShadow, this._shadow)
+    this._rendered && this._rendered()
   }
 
   /**

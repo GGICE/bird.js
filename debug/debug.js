@@ -32,6 +32,9 @@ App.component('hello-text', {
   removed() {
 
   },
+  rendered() {
+    console.log('rendered!')
+  },
   attributeChanged(name, oldVal, newVal) {
 
   },
