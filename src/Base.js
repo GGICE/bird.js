@@ -1,4 +1,6 @@
 const { console } = window
+import Btp from './Btp'
+
 
 class Base extends HTMLElement {
   constructor() {
@@ -52,9 +54,14 @@ class Base extends HTMLElement {
     }
     this._styles = styles
     this._rendered = rendered
+    this._btp = new Btp()
     this._bindAttr()
     this._render()
     created && created.apply(this)
+  }
+
+  _parse() {
+    return this._btp._parse(this)
   }
   
   _initShadowEL() {
@@ -82,41 +89,6 @@ class Base extends HTMLElement {
   setData(data) {
     this.data = Object.assign(this.data, data)
     this._applyDataToAttr(data)
-  }
-
-  /**
-   * 模板引擎
-   * TODO 需要优化匹配
-   */
-  _parse() {
-    const { template, data, _styles } = this
-    var html = template.replace(/\s*/g, '')
-    html = template.replace(/{[\w+\.*\w+]+}/g, function($1){
-      var key = $1.match(/{(\S*)}/)[1]
-      if(typeof data[key] === 'function') {
-        return 'function[' + key + ']'
-      }
-      if(data[key]) {
-        return 'b@@##data.' + key + '}'
-      }
-      if(key.indexOf('.') !== -1) {
-        return 'b@@##' + key + '}'
-      }
-      return ''
-    })
-    html = html.replace(/"/g, '`')
-    html = html.replace(/{/g, '${data.')
-    html = html.replace(/b@@##/g, '${')
-    html = '`' + html + '`'
-    try {
-      html = eval(html)
-    } catch(e) {
-      window.console.warn(e)
-    }
-    if(_styles) {
-      html = '<style>' + _styles + '</style>' + html
-    }
-    return html
   }
 
   _render() {
