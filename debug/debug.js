@@ -1,4 +1,4 @@
-var App = new Bird({
+var app = new Bird({
   template: `
     <p>Text: </p>
     <hello-text>1</hello-text>
@@ -10,7 +10,7 @@ var App = new Bird({
   el: '#app'
 })
 
-App.component('hello-text', {
+app.component('hello-text', {
   template: `<div>{text}</div>`,
   styles: `
     div {
@@ -44,7 +44,7 @@ App.component('hello-text', {
   }
 })
 
-App.component('user-list', {
+app.component('user-list', {
   template: `
   <div>
     {users.map(user => "
@@ -64,7 +64,7 @@ App.component('user-list', {
   }
 })
 
-App.component('text-input', {
+app.component('text-input', {
   template: `<div>
               <input on-keyup={inputChange}>
               <div>{result || ''}</div>
