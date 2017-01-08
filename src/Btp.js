@@ -44,17 +44,14 @@ class Btp {
     if(_styles) {
       html = '<style>' + _styles + '</style>' + html
     }
-
     return html
   }
 
   _parseMap(html) {
     return html.replace(/\w*.map\(\S*\)/g, ($1) => {
-      return $1.replace(/\w*.map\(\S*\)/, ($2) => {
-        $2 = $2.replace(/{/g, 'b-@@##')
-        $2 = $2.replace(/"/g, '`')
-        return $2 + '.join("")'
-      })
+      $1 = $1.replace(/{/g, 'b-@@##')
+      $1 = $1.replace(/"/g, '`')
+      return $1 + '.join("")'
     })
   }
 
