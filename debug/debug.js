@@ -44,37 +44,37 @@ App.component('hello-text', {
   }
 })
 
-App.component('user-list', {
-  template: `
-  <div>
-    {users.map(user => "
-      <p>我叫{user.name}, 年龄{user.age}</p>
-    ").join('')}
-  <div>
-  `,
-  data: {
-    users: [{
-      name: 'test',
-      age: 20
-    },
-    {
-      name: 'test3',
-      age: 21
-    }]
-  }
-})
-
-App.component('text-input', {
-  template: `<div>
-              <input on-keyup={inputChange}>
-              <div>{result}</div>
-            </div>`,
-
-  data: {
-    inputChange(e) {
-      this.setData({
-        result: e.target.value
-      })
-    }
-  }
-})
+//App.component('user-list', {
+//  template: `
+//  <div>
+//    {users.map(user => "
+//      <p>我叫{user.name}, 年龄{user.age}</p>
+//    ").join('')}
+//  <div>
+//  `,
+//  data: {
+//    users: [{
+//      name: 'test',
+//      age: 20
+//    },
+//    {
+//      name: 'test3',
+//      age: 21
+//    }]
+//  }
+//})
+//
+//App.component('text-input', {
+//  template: `<div>
+//              <input on-keyup={inputChange}>
+//              <div>{result}</div>
+//            </div>`,
+//
+//  data: {
+//    inputChange(e) {
+//      this.setData({
+//        result: e.target.value
+//      })
+//    }
+//  }
+//})

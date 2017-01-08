@@ -7,7 +7,6 @@ class Base extends HTMLElement {
 
   createdCallback() {
     this._init()
-    this._render()
   }
 
   attachedCallback() {
@@ -24,16 +23,20 @@ class Base extends HTMLElement {
 
   attributeChangedCallback(name, oldVal, newVal) {
     const { attributeChanged } = this
-    this._reRender(name)
+    
     attributeChanged && attributeChanged.apply(this, name, oldVal, newVal)
+    if(oldVal === null && JSON.stringify(this.initData[name]) === newVal) {
+      //跳过初始时的reRender
+      return
+    }
+    this._reRender(name)
   }
 
   _init() {
     const options = this.getOptions()
     const { template , data, created, styles, rendered } = options
-
-    this._tempShadow = document.createElement('div').createShadowRoot()
-    this._shadow = this.createShadowRoot()
+    
+    this._initShadowEL()
     if(!template) {
       this.template = null
       console.warn('No template!')
@@ -45,13 +48,20 @@ class Base extends HTMLElement {
       console.warn('No data!')
     } else {
       this.data = data
+      this.initData = Object.assign({}, data)
     }
     this._styles = styles
     this._rendered = rendered
-    this._bind()
+    this._bindAttr()
+    this._render()
     created && created.apply(this)
   }
-
+  
+  _initShadowEL() {
+    this._tempShadow = document.createElement('div').createShadowRoot()
+    this._shadow = this.createShadowRoot()
+  }
+  
   _applyDataToAttr(data) {
     for(var key in data) {
       this.setAttribute(key, JSON.stringify(data[key]))
@@ -61,7 +71,7 @@ class Base extends HTMLElement {
   /**
    * 绑定data到Attribute
    */
-  _bind() {
+  _bindAttr() {
     const { data } = this
     this._applyDataToAttr(data)
   }
@@ -147,7 +157,6 @@ class Base extends HTMLElement {
    */
   _bindEvents() {
     var els = this._shadow
-
     this._buildChildEvents(els)
   }
 
