@@ -4,7 +4,8 @@ module.exports = {
     },
     output: {
       path: __dirname,
-      filename: "./dist/[name].js"
+      filename: "./dist/[name].js",
+      libraryTarget: "commonjs2"
     },
     module: {
       loaders: [
