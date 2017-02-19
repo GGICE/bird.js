@@ -1,2 +1,2 @@
 # bird.js
-a web components lib.
+A web components lib.
