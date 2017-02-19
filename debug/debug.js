@@ -13,7 +13,7 @@ var app = new Bird({
 })
 
 app.component('hello-text', {
-  template: `<div>{text}</div>`,
+  template: `<div class='hello'>{text}</div>`,
   styles: `
     div {
       color: red;

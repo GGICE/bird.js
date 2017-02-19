@@ -3,22 +3,22 @@ class Btp {
    * 模板引擎
    * TODO 需要优化匹配
    * TODO XSS 攻击过滤
-   * 
+   *
    * 需要支持以下几种匹配规则:
-   * 
+   *
    * _parseNormal do
    * {someVar} => ${data.someVar}
    * {someVar.someVar} => ${data.someVar.someVar}
-   * 
+   *
    * _parseMap() do
    * {users.map(user => "
    *   <p>我叫{user.name}, 年龄{user.age}</p>
-   * ")} 
-   * => 
+   * ")}
+   * =>
    * ${data.users.map(user => "
    *   <p>我叫{user.name}, 年龄{user.age}</p>
-   * ").join('')} 
-   * 
+   * ").join('')}
+   *
    * 临时占位符： 'b-@@##'
    */
 
@@ -29,8 +29,10 @@ class Btp {
   _parse(options) {
     /*eslint no-unused-vars: "warn"*/
     const { template, data, _styles } = options
-    var html = template.replace(/\s*/g, '')
-    
+    var html = template
+               .replace(/\r|\f|\n/g, '')
+               .replace(/( )+/g, ' ')
+
     html = this._parseMap(html)
     html = this._parseEvent(html)
     html = this._parseNormal(html)
@@ -48,7 +50,8 @@ class Btp {
   }
 
   _parseMap(html) {
-    return html.replace(/\w*.map\(\S*\)/g, ($1) => {
+    console.log(html)
+    return html.replace(/\w*.map.*\)/g, ($1) => {
       $1 = $1.replace(/{/g, 'b-@@##')
       $1 = $1.replace(/"/g, '`')
       return $1 + '.join("")'
