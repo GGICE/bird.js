@@ -28,7 +28,7 @@ class Btp {
 
   _parse(options) {
     /*eslint no-unused-vars: "warn"*/
-    const { template, data, _styles } = options
+    const { template, _styles } = options
     var html = template
                .replace(/\r|\f|\n/g, '')
                .replace(/( )+/g, ' ')
@@ -50,7 +50,6 @@ class Btp {
   }
 
   _parseMap(html) {
-    console.log(html)
     return html.replace(/\w*.map.*\)/g, ($1) => {
       $1 = $1.replace(/{/g, 'b-@@##')
       $1 = $1.replace(/"/g, '`')

@@ -90,7 +90,7 @@ module.exports =
 	        function Temp() {
 	          _classCallCheck(this, Temp);
 
-	          return _possibleConstructorReturn(this, Object.getPrototypeOf(Temp).apply(this, arguments));
+	          return _possibleConstructorReturn(this, (Temp.__proto__ || Object.getPrototypeOf(Temp)).apply(this, arguments));
 	        }
 
 	        _createClass(Temp, [{
@@ -139,8 +139,8 @@ module.exports =
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _window = window;
-	var console = _window.console;
+	var _window = window,
+	    console = _window.console;
 
 	var Base = function (_HTMLElement) {
 	  _inherits(Base, _HTMLElement);
@@ -148,7 +148,7 @@ module.exports =
 	  function Base() {
 	    _classCallCheck(this, Base);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Base).call(this));
+	    return _possibleConstructorReturn(this, (Base.__proto__ || Object.getPrototypeOf(Base)).call(this));
 	  }
 
 	  _createClass(Base, [{
@@ -189,11 +189,11 @@ module.exports =
 	    key: '_init',
 	    value: function _init() {
 	      var options = this.getOptions();
-	      var template = options.template;
-	      var data = options.data;
-	      var created = options.created;
-	      var styles = options.styles;
-	      var rendered = options.rendered;
+	      var template = options.template,
+	          data = options.data,
+	          created = options.created,
+	          styles = options.styles,
+	          rendered = options.rendered;
 
 
 	      this._initShadowEL();
@@ -359,22 +359,22 @@ module.exports =
 	   * 模板引擎
 	   * TODO 需要优化匹配
 	   * TODO XSS 攻击过滤
-	   * 
+	   *
 	   * 需要支持以下几种匹配规则:
-	   * 
+	   *
 	   * _parseNormal do
 	   * {someVar} => ${data.someVar}
 	   * {someVar.someVar} => ${data.someVar.someVar}
-	   * 
+	   *
 	   * _parseMap() do
 	   * {users.map(user => "
 	   *   <p>我叫{user.name}, 年龄{user.age}</p>
-	   * ")} 
-	   * => 
+	   * ")}
+	   * =>
 	   * ${data.users.map(user => "
 	   *   <p>我叫{user.name}, 年龄{user.age}</p>
-	   * ").join('')} 
-	   * 
+	   * ").join('')}
+	   *
 	   * 临时占位符： 'b-@@##'
 	   */
 
@@ -388,11 +388,10 @@ module.exports =
 	    key: '_parse',
 	    value: function _parse(options) {
 	      /*eslint no-unused-vars: "warn"*/
-	      var template = options.template;
-	      var data = options.data;
-	      var _styles = options._styles;
+	      var template = options.template,
+	          _styles = options._styles;
 
-	      var html = template.replace(/\s*/g, '');
+	      var html = template.replace(/\r|\f|\n/g, '').replace(/( )+/g, ' ');
 
 	      html = this._parseMap(html);
 	      html = this._parseEvent(html);
@@ -412,7 +411,7 @@ module.exports =
 	  }, {
 	    key: '_parseMap',
 	    value: function _parseMap(html) {
-	      return html.replace(/\w*.map\(\S*\)/g, function ($1) {
+	      return html.replace(/\w*.map.*\)/g, function ($1) {
 	        $1 = $1.replace(/{/g, 'b-@@##');
 	        $1 = $1.replace(/"/g, '`');
 	        return $1 + '.join("")';
