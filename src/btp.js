@@ -28,7 +28,7 @@ class Btp {
 
   _parse(options) {
     /*eslint no-unused-vars: "warn"*/
-    const { template, _styles } = options
+    const { template, data, _styles } = options
     var html = template
                .replace(/\r|\f|\n/g, '')
                .replace(/( )+/g, ' ')

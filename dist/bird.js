@@ -389,6 +389,7 @@ module.exports =
 	    value: function _parse(options) {
 	      /*eslint no-unused-vars: "warn"*/
 	      var template = options.template,
+	          data = options.data,
 	          _styles = options._styles;
 
 	      var html = template.replace(/\r|\f|\n/g, '').replace(/( )+/g, ' ');
