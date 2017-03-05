@@ -27,7 +27,8 @@ class Base extends HTMLElement {
     const { attributeChanged } = this
     
     attributeChanged && attributeChanged.apply(this, name, oldVal, newVal)
-    if(oldVal === null && JSON.stringify(this.initData[name]) === newVal) {
+    if(oldVal === null && this.initData && 
+      JSON.stringify(this.initData[name]) === newVal) {
       //跳过初始时的reRender
       return
     }
@@ -41,17 +42,16 @@ class Base extends HTMLElement {
     this._initShadowEL()
     if(!template) {
       this.template = null
-      console.warn('No template!')
     } else {
       this.template = template
     }
     if(!data) {
       this.data = null
-      console.warn('No data!')
     } else {
       this.data = data
       this.initData = Object.assign({}, data)
     }
+    this._applyAttrToData()
     this._styles = styles
     this._rendered = rendered
     this._btp = new Btp()
@@ -67,6 +67,11 @@ class Base extends HTMLElement {
   _initShadowEL() {
     this._tempShadow = document.createElement('div').createShadowRoot()
     this._shadow = this.createShadowRoot()
+  }
+
+  _applyAttrToData() {
+    const data = this.getAttribute('b-model')
+    this.data = Object.assign({}, this.data, JSON.parse(data || '{}'))  
   }
   
   _applyDataToAttr(data) {

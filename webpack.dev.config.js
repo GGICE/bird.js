@@ -15,6 +15,7 @@ module.exports = {
       contentBase: "./",
       hot: true,
       inline: true,
+      host: '0.0.0.0',
       port: 9210
     }
 };

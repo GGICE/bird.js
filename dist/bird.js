@@ -179,7 +179,7 @@ module.exports =
 
 
 	      attributeChanged && attributeChanged.apply(this, name, oldVal, newVal);
-	      if (oldVal === null && JSON.stringify(this.initData[name]) === newVal) {
+	      if (oldVal === null && this.initData && JSON.stringify(this.initData[name]) === newVal) {
 	        //跳过初始时的reRender
 	        return;
 	      }
@@ -199,17 +199,16 @@ module.exports =
 	      this._initShadowEL();
 	      if (!template) {
 	        this.template = null;
-	        console.warn('No template!');
 	      } else {
 	        this.template = template;
 	      }
 	      if (!data) {
 	        this.data = null;
-	        console.warn('No data!');
 	      } else {
 	        this.data = data;
 	        this.initData = Object.assign({}, data);
 	      }
+	      this._applyAttrToData();
 	      this._styles = styles;
 	      this._rendered = rendered;
 	      this._btp = new _btp2.default();
@@ -227,6 +226,12 @@ module.exports =
 	    value: function _initShadowEL() {
 	      this._tempShadow = document.createElement('div').createShadowRoot();
 	      this._shadow = this.createShadowRoot();
+	    }
+	  }, {
+	    key: '_applyAttrToData',
+	    value: function _applyAttrToData() {
+	      var data = this.getAttribute('b-model');
+	      this.data = Object.assign({}, this.data, JSON.parse(data || '{}'));
 	    }
 	  }, {
 	    key: '_applyDataToAttr',
@@ -430,7 +435,7 @@ module.exports =
 	  }, {
 	    key: '_parseNormal',
 	    value: function _parseNormal(html) {
-	      return html.replace('{', '${data.');
+	      return html.replace(/{/g, '${data.');
 	    }
 	  }]);
 

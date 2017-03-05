@@ -66,7 +66,7 @@ class Btp {
   }
 
   _parseNormal(html) {
-    return html.replace('{', '${data.')
+    return html.replace(/{/g, '${data.')
   }
 
 }
