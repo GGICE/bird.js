@@ -5,6 +5,7 @@ class Bird {
     var wrap = document.querySelector(options.el)
     
     wrap.innerHTML = options.template
+    this.customEventHost = document.createElement('div')
     this.randers()
   }
 
@@ -22,7 +23,25 @@ class Bird {
   }
 
   randers() {
+    //Do nothing
   }
+
+  on(name, callback) {
+    const { customEventHost } = this
+    customEventHost.addEventListener(name, function(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      callback(e.detail)
+    })
+  }
+
+  trigger(name, args) {
+    const { customEventList, customEventHost } = this
+    var event = new CustomEvent(name, { 
+      'detail': args
+    });
+    customEventHost.dispatchEvent(event)
+  } 
 }
 
 export default Bird

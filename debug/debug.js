@@ -1,5 +1,6 @@
 import Bird from '../src/bird'
 
+window.DEBUG = true
 var app = new Bird({
   template: `
     <p>Text: </p>
@@ -12,39 +13,42 @@ var app = new Bird({
   el: '#app'
 })
 
-// app.component('hello-text', {
-//   template: `<div class='hello'>{text}</div>`,
-//   styles: `
-//     div {
-//       color: red;
-//       font-size: 17px;
-//     }
-//   `,
-//   created() {
-//     var that = this
-//     setTimeout(function(){
-//       that.setData({
-//         text: '我发生变化了 haha!'
-//       })
-//     }, 2000)
-//   },
-//   attached() {
+app.component('hello-text', {
+  template: `<div class='hello'>{text}</div>`,
+  styles: `
+    div {
+      color: red;
+      font-size: 17px;
+    }
+  `,
+  created() {
+    var that = this
+    setTimeout(function(){
+      that.setData({
+        text: '我发生变化了 haha!'
+      })
+      app.trigger('hello', {
+        text: 'hello!'
+      })
+    }, 2000)
+  },
+  attached() {
 
-//   },
-//   removed() {
+  },
+  removed() {
 
-//   },
-//   rendered() {
-//     console.log('rendered!')
-//   },
-//   attributeChanged(name, oldVal, newVal) {
+  },
+  rendered() {
+    console.log('rendered!')
+  },
+  attributeChanged(name, oldVal, newVal) {
 
-//   },
-//   data: {
-//     text: 'Hello Bird.js',
-//     test: 'test'
-//   }
-// })
+  },
+  data: {
+    text: 'Hello Bird.js',
+    test: 'test'
+  }
+})
 
 app.component('user-list', {
   template: `
@@ -63,6 +67,11 @@ app.component('user-list', {
       name: 'test3',
       age: 21
     }]
+  },
+  created() {
+    app.on('hello', function(arg){
+      console.log(arg)
+    })
   }
 })
 

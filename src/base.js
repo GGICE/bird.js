@@ -1,5 +1,6 @@
 const { console } = window
 import Btp from './btp'
+import logs from './common/logs'
 
 
 class Base extends HTMLElement {
@@ -116,7 +117,7 @@ class Base extends HTMLElement {
    */
   _diff(newDom, oldDom) {
     if(newDom.innerHTML === oldDom.innerHTML) {
-      return console.log('diff Same!')
+      return logs.log('diff Same!')
     }
     [].forEach.call(newDom.childNodes, (el, index) => {
       if(el.innerHTML !== oldDom.childNodes[index].innerHTML) {

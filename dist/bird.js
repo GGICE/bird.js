@@ -1,5 +1,14 @@
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -72,6 +81,7 @@ module.exports =
 	    var wrap = document.querySelector(options.el);
 
 	    wrap.innerHTML = options.template;
+	    this.customEventHost = document.createElement('div');
 	    this.randers();
 	  }
 
@@ -107,7 +117,31 @@ module.exports =
 	    }
 	  }, {
 	    key: 'randers',
-	    value: function randers() {}
+	    value: function randers() {
+	      //Do nothing
+	    }
+	  }, {
+	    key: 'on',
+	    value: function on(name, callback) {
+	      var customEventHost = this.customEventHost;
+
+	      customEventHost.addEventListener(name, function (e) {
+	        e.preventDefault();
+	        e.stopPropagation();
+	        callback(e.detail);
+	      });
+	    }
+	  }, {
+	    key: 'trigger',
+	    value: function trigger(name, args) {
+	      var customEventList = this.customEventList,
+	          customEventHost = this.customEventHost;
+
+	      var event = new CustomEvent(name, {
+	        'detail': args
+	      });
+	      customEventHost.dispatchEvent(event);
+	    }
 	  }]);
 
 	  return Bird;
@@ -130,6 +164,10 @@ module.exports =
 	var _btp = __webpack_require__(2);
 
 	var _btp2 = _interopRequireDefault(_btp);
+
+	var _logs = __webpack_require__(3);
+
+	var _logs2 = _interopRequireDefault(_logs);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -291,7 +329,7 @@ module.exports =
 	      var _this2 = this;
 
 	      if (newDom.innerHTML === oldDom.innerHTML) {
-	        return console.log('diff Same!');
+	        return _logs2.default.log('diff Same!');
 	      }
 	      [].forEach.call(newDom.childNodes, function (el, index) {
 	        if (el.innerHTML !== oldDom.childNodes[index].innerHTML) {
@@ -444,5 +482,39 @@ module.exports =
 
 	exports.default = Btp;
 
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var _window = window,
+	    console = _window.console;
+	exports.default = {
+	  isDo: function isDo() {
+	    return window.DEBUG;
+	  },
+	  log: function log() {
+	    if (this.isDo()) {
+	      console.log(arguments);
+	    }
+	  },
+	  warn: function warn() {
+	    if (this.isDo()) {
+	      console.warn(arguments);
+	    }
+	  },
+	  error: function error() {
+	    if (this.isDo()) {
+	      console.error(arguments);
+	    }
+	  }
+	};
+
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
