@@ -72,6 +72,36 @@ app.component('user-list', {
     app.on('hello', function(arg){
       console.log(arg)
     })
+
+    setTimeout(() => {
+      this.setData({
+        users: [
+          {
+            name: 'only',
+            age: 1
+          }
+        ]
+      })
+    }, 2000)
+
+    setTimeout(() => {
+      this.setData({
+        users: [
+          {
+            name: 'only',
+            age: 2
+          },
+          {
+            name: 'only',
+            age: 2
+          },
+          {
+            name: 'only',
+            age: 2
+          }
+        ]
+      })
+    }, 3000)
   }
 })
 
@@ -80,21 +110,19 @@ app.component('t-user', {
     <p>我叫{name}, 年龄{age}</p>
   `,
   created() {
-    console.log(this.data)
   }
 })
 
-// app.component('text-input', {
-//   template: `<div>
-//               <input on-keyup={inputChange}>
-//               <div>{result || ''}</div>
-//             </div>`,
-
-//   data: {
-//     inputChange(e) {
-//       this.setData({
-//         result: e.target.value
-//       })
-//     }
-//   }
-// })
+app.component('text-input', {
+  template: `<div>
+              <input on-keyup={inputChange}>
+              <div>{result || ''}</div>
+            </div>`,
+  data: {
+    inputChange(e) {
+      this.setData({
+        result: e.target.value
+      })
+    }
+  }
+})

@@ -12,7 +12,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "build": "webpack --progress --profile --colors",
+    "build": "webpack -p --progress --profile --colors",
     "dev": "webpack-dev-server --config webpack.dev.config.js --hot --progress --profile --colors",
     "lintJs": "eslint ./src/**/*.js",
     "gitAdd": "git add ."
