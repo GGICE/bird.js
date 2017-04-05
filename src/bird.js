@@ -2,9 +2,8 @@ import Base from './base'
 
 class Bird {
   constructor(options) {
-    var wrap = document.querySelector(options.el)
-
-    wrap.innerHTML = options.template
+    this.wrap = document.querySelector(options.el)
+    this.wrap.innerHTML = options.template
     this.customEventHost = document.createElement('div')
     this.randers()
   }
@@ -20,6 +19,10 @@ class Bird {
       }
     }
     document.registerElement(name, Temp)
+  }
+
+  setTemplate(template) {
+    this.wrap.innerHTML = template
   }
 
   randers() {
