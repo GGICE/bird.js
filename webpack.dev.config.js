@@ -1,6 +1,9 @@
+const config = require('./config')
+
 module.exports = {
     entry: {
-      debug: "./debug/debug.js"
+      debug: "./debug/debug.js",
+      test: "./test/test.js"
     },
     output: {
       path: __dirname,
@@ -17,6 +20,6 @@ module.exports = {
       hot: true,
       inline: true,
       host: '0.0.0.0',
-      port: 9210
+      port: config.port
     }
 };

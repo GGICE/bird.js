@@ -8,14 +8,16 @@
     "webpack": "1.13.3",
     "webpack-dev-server": "^1.14.1",
     "eslint": "^3.7.1",
-    "pre-commit": "^1.1.3"
+    "pre-commit": "^1.1.3",
+    "opn": "5.0.0"
   },
   "dependencies": {},
   "scripts": {
     "build": "webpack -p --progress --profile --colors",
     "dev": "webpack-dev-server --config webpack.dev.config.js --hot --progress --profile --colors",
     "lintJs": "eslint ./src/**/*.js",
-    "gitAdd": "git add ."
+    "gitAdd": "git add .",
+    "test": "./test/run.js"
   },
   "pre-commit": [
     "lintJs",
