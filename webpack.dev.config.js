@@ -1,4 +1,5 @@
 const config = require('./config')
+const opn = require('opn')
 
 module.exports = {
     entry: {
@@ -23,3 +24,6 @@ module.exports = {
       port: config.port
     }
 };
+
+opn('http://localhost:' + config.port);
+opn('http://localhost:' + config.port + '/test');
