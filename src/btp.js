@@ -6,11 +6,11 @@ class Btp {
    *
    * 需要支持以下几种匹配规则:
    *
-   * _parseNormal do
+   * parseNormal do
    * {someVar} => ${data.someVar}
    * {someVar.someVar} => ${data.someVar.someVar}
    *
-   * _parseMap() do
+   * parseMap() do
    * {users.map(user => "
    *   <p>我叫{user.name}, 年龄{user.age}</p>
    * ")}
@@ -26,16 +26,16 @@ class Btp {
     //Do nothing
   }
 
-  _parse(options) {
+  parse(options) {
     /*eslint no-unused-vars: "warn"*/
-    const { template, data, _styles } = options
+    const { template, data, styles } = options
     var html = template
                .replace(/\r|\f|\n/g, '')
                .replace(/( )+/g, ' ')
 
-    html = this._parseMap(html)
-    html = this._parseEvent(html)
-    html = this._parseNormal(html)
+    html = this.parseMap(html)
+    html = this.parseEvent(html)
+    html = this.parseNormal(html)
     html = html.replace(/b-@@##/g, '${')
     html = '`' + html + '`'
     try {
@@ -43,13 +43,13 @@ class Btp {
     } catch(e) {
       window.console.warn(e)
     }
-    if(_styles) {
-      html = '<style>' + _styles + '</style>' + html
+    if(styles) {
+      html = '<style>' + styles + '</style>' + html
     }
     return html
   }
 
-  _parseMap(html) {
+  parseMap(html) {
     return html.replace(/\w*.map.*\)/g, ($1) => {
       $1 = $1.replace(/{/g, 'b-@@##')
       $1 = $1.replace(/"/g, '`')
@@ -57,7 +57,7 @@ class Btp {
     })
   }
 
-  _parseEvent(html) {
+  parseEvent(html) {
     return html.replace(/on-\w*={\w*}/g, ($1) => {
       return ' ' + $1.replace(/{(\w*)}/, ($2, $3) => {
         return 'function[' + $3 + ']'
@@ -65,7 +65,7 @@ class Btp {
     })
   }
 
-  _parseNormal(html) {
+  parseNormal(html) {
     return html.replace(/{/g, '${data.')
   }
 

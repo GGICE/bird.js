@@ -8,7 +8,7 @@ class Base extends HTMLElement {
   }
 
   createdCallback() {
-    this._init()
+    this.init()
   }
 
   attachedCallback() {
@@ -38,10 +38,10 @@ class Base extends HTMLElement {
       //跳过初始时的reRender
       return
     }
-    this._reRender(name)
+    this.reRender(name)
   }
 
-  _init() {
+  init() {
     const options = this.getOptions()
     const {
       template,
@@ -51,7 +51,7 @@ class Base extends HTMLElement {
       rendered
     } = options
 
-    this._initShadowEL()
+    this.initShadowEL()
     if (!template) {
       this.template = null
     } else {
@@ -63,30 +63,30 @@ class Base extends HTMLElement {
       this.data = data
       this.initData = Object.assign({}, data)
     }
-    this._applyAttrToData()
-    this._styles = styles
-    this._rendered = rendered
-    this._btp = new Btp()
-    this._bindAttr()
-    this._render()
+    this.applyAttrToData()
+    this.styles = styles
+    this.rendered = rendered
+    this.btp = new Btp()
+    this.bindAttr()
+    this.render()
     created && created.apply(this)
   }
 
-  _parse() {
-    return this._btp._parse(this)
+  parse() {
+    return this.btp.parse(this)
   }
 
-  _initShadowEL() {
-    this._tempShadow = document.createElement('div').createShadowRoot()
-    this._shadow = this.createShadowRoot()
+  initShadowEL() {
+    this.tempShadow = document.createElement('div').createShadowRoot()
+    this.shadow = this.createShadowRoot()
   }
 
-  _applyAttrToData() {
+  applyAttrToData() {
     const data = this.getAttribute('b-model')
     this.data = Object.assign({}, this.data, JSON.parse(data || '{}'))
   }
 
-  _applyDataToAttr(data) {
+  applyDataToAttr(data) {
     for (var key in data) {
       this.setAttribute(key, JSON.stringify(data[key]))
     }
@@ -95,11 +95,11 @@ class Base extends HTMLElement {
   /**
    * 绑定data到Attribute
    */
-  _bindAttr() {
+  bindAttr() {
     const {
       data
     } = this
-    this._applyDataToAttr(data)
+    this.applyDataToAttr(data)
   }
 
   /**
@@ -107,19 +107,19 @@ class Base extends HTMLElement {
    */
   setData(data) {
     this.data = Object.assign(this.data, data)
-    this._applyDataToAttr(data)
+    this.applyDataToAttr(data)
   }
 
-  _render() {
-    this._shadow.innerHTML = this._parse()
-    this._bindEvents()
-    this._rendered && this._rendered()
+  render() {
+    this.shadow.innerHTML = this.parse()
+    this.bindEvents()
+    this.rendered && this.rendered()
   }
 
-  _reRender() {
-    this._tempShadow.innerHTML = this._parse()
-    this._diffAsyn(this._tempShadow, this._shadow)
-    this._rendered && this._rendered()
+  reRender() {
+    this.tempShadow.innerHTML = this.parse()
+    this.diffAsyn(this.tempShadow, this.shadow)
+    this.rendered && this.rendered()
   }
 
   /**
@@ -128,12 +128,12 @@ class Base extends HTMLElement {
    *  2.增  done
    *  3.删  done
    */
-  _diff(newDom, oldDom) {
+  diff(newDom, oldDom) {
     if (newDom.innerHTML === oldDom.innerHTML) {
       return logs.log('diff Same!')
     }
-    var oldNodes = this._getEls(oldDom.childNodes)
-    var newNodes = this._getEls(newDom.childNodes)
+    var oldNodes = this.getEls(oldDom.childNodes)
+    var newNodes = this.getEls(newDom.childNodes)
     var oldLength = oldNodes.length
     var newLength = newNodes.length
     var length = Math.min(newLength, oldLength)
@@ -141,47 +141,42 @@ class Base extends HTMLElement {
     //ADD TODO: support key
     if(newLength > oldLength) {
       for(i = oldLength; i < newLength; i++ ) {
-        logs.log('Add', i, newNodes[i])
         oldDom.appendChild(newNodes[i])
       }
     }
     //Remove TODO: support key
     if(newLength < oldLength) {
       for(i = oldLength; i > newLength ; i-- ) {
-        logs.log('Remove lastChild', oldNodes[i - 1])
         oldDom.removeChild(oldNodes[i - 1])
       }
     }
     //Change
     for(i = 0; i < length; i++) {
-      logs.log('Change', i, oldNodes[i].outerHTML, newNodes[i].outerHTML)
       if (newNodes[i].outerHTML === oldNodes[i].outerHTML) {
         continue
       }
 
       if(newNodes[i].tagName !== oldNodes[i].tagName) {
-        logs.log('Change Replace', i, oldNodes[i].outerHTML, newNodes[i].outerHTML)
         oldDom.replaceChild(newNodes[i], oldNodes[i])
         continue
       }
 
-      if (this._getEls(newNodes[i].childNodes).length > 0) {
-        this._diffAsyn(newNodes[i], oldNodes[i])
+      if (this.getEls(newNodes[i].childNodes).length > 0) {
+        this.diffAsyn(newNodes[i], oldNodes[i])
       } else {
-        logs.log('Change', i, oldNodes[i].outerHTML, newNodes[i].outerHTML)
         oldDom.replaceChild(newNodes[i], oldNodes[i])
       }
     }
   }
 
-  _diffAsyn(newDom, oldDom) {
+  diffAsyn(newDom, oldDom) {
     return new Promise((resolve) => {
-      this._diff(newDom, oldDom)
+      this.diff(newDom, oldDom)
       resolve()
     })
   }
 
-  _getEls(nodeList) {
+  getEls(nodeList) {
     return [].filter.call(nodeList, function(node){
       return node.nodeType === 1
     })
@@ -190,12 +185,12 @@ class Base extends HTMLElement {
   /**
    * 绑定事件的方法，需要在render之后执行
    */
-  _bindEvents() {
-    var els = this._shadow
-    this._buildChildEvents(els)
+  bindEvents() {
+    var els = this.shadow
+    this.buildChildEvents(els)
   }
 
-  _buildChildEvents(fEl) {
+  buildChildEvents(fEl) {
     [].forEach.call(fEl.childNodes, (el) => {
       if (el.attributes && el.attributes.length > 0) {
         [].forEach.call(el.attributes, (attr) => {
@@ -212,7 +207,7 @@ class Base extends HTMLElement {
           }
         })
       }
-      this._buildChildEvents(el)
+      this.buildChildEvents(el)
     })
   }
 
