@@ -1,6 +1,6 @@
+import logs from 'common/logs'
 import Btp from './btp'
-import logs from './common/logs'
-
+import Diff from './diff'
 
 class Base extends HTMLElement {
   constructor() {
@@ -118,68 +118,8 @@ class Base extends HTMLElement {
 
   reRender() {
     this.tempShadow.innerHTML = this.parse()
-    this.diffAsyn(this.tempShadow, this.shadow)
+    Diff.diffAsyn(this.tempShadow, this.shadow)
     this.rendered && this.rendered()
-  }
-
-  /**
-   *  需要支持增删改
-   *  1.改  done
-   *  2.增  done
-   *  3.删  done
-   */
-  diff(newDom, oldDom) {
-    if (newDom.innerHTML === oldDom.innerHTML) {
-      return logs.log('diff Same!')
-    }
-    var oldNodes = this.getEls(oldDom.childNodes)
-    var newNodes = this.getEls(newDom.childNodes)
-    var oldLength = oldNodes.length
-    var newLength = newNodes.length
-    var length = Math.min(newLength, oldLength)
-    var i
-    //ADD TODO: support key
-    if(newLength > oldLength) {
-      for(i = oldLength; i < newLength; i++ ) {
-        oldDom.appendChild(newNodes[i])
-      }
-    }
-    //Remove TODO: support key
-    if(newLength < oldLength) {
-      for(i = oldLength; i > newLength ; i-- ) {
-        oldDom.removeChild(oldNodes[i - 1])
-      }
-    }
-    //Change
-    for(i = 0; i < length; i++) {
-      if (newNodes[i].outerHTML === oldNodes[i].outerHTML) {
-        continue
-      }
-
-      if(newNodes[i].tagName !== oldNodes[i].tagName) {
-        oldDom.replaceChild(newNodes[i], oldNodes[i])
-        continue
-      }
-
-      if (this.getEls(newNodes[i].childNodes).length > 0) {
-        this.diffAsyn(newNodes[i], oldNodes[i])
-      } else {
-        oldDom.replaceChild(newNodes[i], oldNodes[i])
-      }
-    }
-  }
-
-  diffAsyn(newDom, oldDom) {
-    return new Promise((resolve) => {
-      this.diff(newDom, oldDom)
-      resolve()
-    })
-  }
-
-  getEls(nodeList) {
-    return [].filter.call(nodeList, function(node){
-      return node.nodeType === 1
-    })
   }
 
   /**

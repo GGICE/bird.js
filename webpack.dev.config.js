@@ -1,5 +1,6 @@
 const config = require('./config')
 const opn = require('opn')
+const path = require('path')
 
 module.exports = {
     entry: {
@@ -14,6 +15,11 @@ module.exports = {
       loaders: [
         { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
       ]
+    },
+    resolve: {
+      alias: {
+        common: path.resolve(__dirname, 'src/common/'),
+      }
     },
     devtool: 'source-map',
     devServer: {

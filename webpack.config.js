@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   entry: {
     bird: "./src/bird.js"
@@ -11,5 +13,10 @@ module.exports = {
     loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
     ]
+  },
+  resolve: {
+    alias: {
+      common: path.resolve(__dirname, 'src/common/'),
+    }
   }
 };
