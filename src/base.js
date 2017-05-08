@@ -1,17 +1,28 @@
 import logs from 'common/logs'
 import Btp from './btp'
 import Diff from './diff'
+import ID from 'common/id'
 
+const btp = new Btp()
 class Base extends HTMLElement {
   constructor() {
     super()
   }
 
-  createdCallback() {
-    this.init()
+  static get observedAttributes() {
+    return ['b-data']
   }
 
-  attachedCallback() {
+  connectedCallback() {
+    this.init()
+    const {
+      created
+    } = this
+
+    created && created.apply(this)
+  }
+
+  adoptedCallback() {
     const {
       attached
     } = this
@@ -19,7 +30,7 @@ class Base extends HTMLElement {
     attached && attached.apply(this)
   }
 
-  detachedCallback() {
+  disconnectedCallback() {
     const {
       removed
     } = this
@@ -51,45 +62,43 @@ class Base extends HTMLElement {
       rendered
     } = options
 
-    this.initShadowEL()
-    if (!template) {
-      this.template = null
-    } else {
-      this.template = template
-    }
     if (!data) {
       this.data = null
     } else {
       this.data = data
       this.initData = Object.assign({}, data)
     }
+    this.initShadowEL()
     this.applyAttrToData()
+    this.template = template || ''
     this.styles = styles
     this.rendered = rendered
-    this.btp = new Btp()
+    this.created = created
     this.bindAttr()
     this.render()
-    created && created.apply(this)
   }
 
   parse() {
-    return this.btp.parse(this)
+    return btp.parse(this)
   }
 
   initShadowEL() {
-    this.tempShadow = document.createElement('div').createShadowRoot()
-    this.shadow = this.createShadowRoot()
+    this.tempShadow = document.createElement('div').attachShadow({
+      mode: 'open'
+    })
+    this.shadow = this.attachShadow({
+      mode: 'open'
+    })
   }
 
   applyAttrToData() {
     const data = this.getAttribute('b-model')
     this.data = Object.assign({}, this.data, JSON.parse(data || '{}'))
+    this.setAttribute('b-model', ID.getNewId())
   }
 
   applyDataToAttr(data) {
-    for (var key in data) {
-      this.setAttribute(key, JSON.stringify(data[key]))
-    }
+    this.setAttribute('b-data', ID.getNewId())
   }
 
   /**

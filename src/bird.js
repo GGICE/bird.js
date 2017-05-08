@@ -14,11 +14,14 @@ class Bird {
    */
   component(name, options) {
     class Temp extends Base {
+      constructor() {
+        super()
+      }
       getOptions() {
         return options
       }
     }
-    document.registerElement(name, Temp)
+    customElements.define(name, Temp)
   }
 
   setTemplate(template) {
