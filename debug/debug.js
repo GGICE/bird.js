@@ -14,7 +14,9 @@ var app = new Bird({
 })
 
 app.component('hello-text', {
-  template: `<div class='hello'>{text}</div>`,
+  template: `
+    <link href="debug/styles.css" rel="stylesheet" title="Default Style">
+    <div class='hello'>{text}</div>`,
   styles: `
     div {
       color: red;

@@ -42,10 +42,10 @@ class Bird {
   }
 
   trigger(name, args) {
-    const { customEventList, customEventHost } = this
+    const { customEventHost } = this
     var event = new CustomEvent(name, {
       'detail': args
-    });
+    })
     customEventHost.dispatchEvent(event)
   }
 }

@@ -1,22 +1,25 @@
 const path = require('path')
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
-    bird: "./src/bird.js"
+    Bird: './src/bird.js'
   },
   output: {
-    path: __dirname,
-    filename: "./dist/[name].js",
-    libraryTarget: "umd"
+    path: path.resolve(__dirname, 'dist/'),
+    filename: '[name].js',
+    libraryTarget: 'umd',
+    library: 'bird'
   },
   module: {
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
-    ]
+    rules: []
   },
   resolve: {
     alias: {
       common: path.resolve(__dirname, 'src/common/'),
     }
-  }
-};
+  },
+  plugins: [
+    // new UglifyJSPlugin()  
+  ]
+}
