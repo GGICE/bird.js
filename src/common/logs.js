@@ -4,19 +4,26 @@ export default {
   isDo() {
     return window.DEBUG
   },
-  log() {
-    if(this.isDo()) {
-      console.log(arguments)
+
+  handleArg(args, doIt) {
+    doIt(args.join(' '))
+  },
+
+  log(...args) {
+    if (this.isDo()) {
+      this.handleArg(args, console.log)
     }
   },
-  warn() {
-    if(this.isDo()) {
-      console.warn(arguments)
+
+  warn(...args) {
+    if (this.isDo()) {
+      this.handleArg(args, console.warn)
     }
   },
-  error() {
-    if(this.isDo()) {
-      console.error(arguments)
+
+  error(...args) {
+    if (this.isDo()) {
+      this.handleArg(args, console.error)
     }
-  }
+  },
 }

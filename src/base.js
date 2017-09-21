@@ -1,12 +1,12 @@
 import logs from 'common/logs'
+import ID from 'common/id'
 import Btp from './btp'
 import Diff from './diff'
-import ID from 'common/id'
 
-const btp = new Btp()
 class Base extends HTMLElement {
-  constructor() {
+  constructor(options) {
     super()
+    this.options = options
   }
 
   static get observedAttributes() {
@@ -16,51 +16,62 @@ class Base extends HTMLElement {
   connectedCallback() {
     this.init()
     const {
-      created
+      created,
     } = this
 
-    created && created.apply(this)
+    if (!created) {
+      return
+    }
+    created.apply(this)
   }
 
   adoptedCallback() {
     const {
-      attached
+      attached,
     } = this
 
-    attached && attached.apply(this)
+    if (!attached) {
+      return
+    }
+    attached.apply(this)
   }
 
   disconnectedCallback() {
     const {
-      removed
+      removed,
     } = this
 
-    removed && removed.apply(this)
+    if (!removed) {
+      return
+    }
+    removed.apply(this)
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
     const {
-      attributeChanged
+      attributeChanged,
     } = this
 
-    attributeChanged && attributeChanged.apply(this, name, oldVal, newVal)
+    if (!attributeChanged) {
+      return
+    }
+    attributeChanged.apply(this, name, oldVal, newVal)
     if (oldVal === null && this.initData &&
       JSON.stringify(this.initData[name]) === newVal) {
-      //跳过初始时的reRender
+      // 跳过初始时的reRender
       return
     }
     this.reRender(name)
   }
 
   init() {
-    const options = this.getOptions()
     const {
       template,
       data,
       created,
       styles,
-      rendered
-    } = options
+      rendered,
+    } = this.options || {}
 
     if (!data) {
       this.data = null
@@ -76,28 +87,35 @@ class Base extends HTMLElement {
     this.created = created
     this.bindAttr()
     this.render()
+    this.options = null
   }
 
   parse() {
-    return btp.parse(this)
+    return Btp.parse(this)
   }
 
   initShadowEL() {
     this.tempShadow = document.createElement('div').attachShadow({
-      mode: 'open'
+      mode: 'open',
     })
     this.shadow = this.attachShadow({
-      mode: 'open'
+      mode: 'open',
     })
   }
 
   applyAttrToData() {
-    const data = this.getAttribute('b-model')
-    this.data = Object.assign({}, this.data, JSON.parse(data || '{}'))
+    let data = this.getAttribute('b-model')
+    try {
+      data = JSON.parse(data || '{}')
+    } catch (e) {
+      logs.warn('Have error : ', e)
+      data = {}
+    }
+    this.data = Object.assign({}, this.data, data)
     this.setAttribute('b-model', ID.getNewId())
   }
 
-  applyDataToAttr(data) {
+  applyDataToAttr() {
     this.setAttribute('b-data', ID.getNewId())
   }
 
@@ -106,7 +124,7 @@ class Base extends HTMLElement {
    */
   bindAttr() {
     const {
-      data
+      data,
     } = this
     this.applyDataToAttr(data)
   }
@@ -122,20 +140,26 @@ class Base extends HTMLElement {
   render() {
     this.shadow.innerHTML = this.parse()
     this.bindEvents()
-    this.rendered && this.rendered()
+    if (!this.rendered) {
+      return
+    }
+    this.rendered()
   }
 
   reRender() {
     this.tempShadow.innerHTML = this.parse()
     Diff.diffAsyn(this.tempShadow, this.shadow)
-    this.rendered && this.rendered()
+    if (!this.rendered) {
+      return
+    }
+    this.rendered()
   }
 
   /**
    * 绑定事件的方法，需要在render之后执行
    */
   bindEvents() {
-    var els = this.shadow
+    const els = this.shadow
     this.buildChildEvents(els)
   }
 
@@ -143,14 +167,13 @@ class Base extends HTMLElement {
     [].forEach.call(fEl.childNodes, (el) => {
       if (el.attributes && el.attributes.length > 0) {
         [].forEach.call(el.attributes, (attr) => {
-          var funName = attr.value.match(/function\[(\w+)\]/)
-          var eventName, funText
+          const funName = attr.value.match(/function\[(\w+)\]/)
 
           if (!funName || !funName[1]) {
             return
           }
-          funText = this.data[funName[1]]
-          eventName = attr.name.replace('on-', '').toLowerCase()
+          const funText = this.data[funName[1]]
+          const eventName = attr.name.replace('on-', '').toLowerCase()
           if (funText) {
             el.addEventListener(eventName, funText.bind(this))
           }
@@ -159,7 +182,6 @@ class Base extends HTMLElement {
       this.buildChildEvents(el)
     })
   }
-
 }
 
 export default Base
