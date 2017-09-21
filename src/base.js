@@ -52,10 +52,9 @@ class Base extends HTMLElement {
       attributeChanged,
     } = this
 
-    if (!attributeChanged) {
-      return
+    if (attributeChanged) {
+      attributeChanged.apply(this, name, oldVal, newVal)
     }
-    attributeChanged.apply(this, name, oldVal, newVal)
     if (oldVal === null && this.initData &&
       JSON.stringify(this.initData[name]) === newVal) {
       // 跳过初始时的reRender
