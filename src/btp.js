@@ -53,7 +53,10 @@ class Btp {
   }
 
   static parseEvent(html) {
-    return html.replace(/on-\w*={{\w*}}/g, $1 => ` ${$1.replace(/{{(\w*)}}/, ($2, $3) => `function[${$3}]`)}`)
+    return html.replace(
+      /on-\w*={{\w*}}/g,
+      $1 => ` ${$1.replace(/{{(\w*)}}/, ($2, $3) => `function[${$3}]`)}`,
+    )
   }
 
   static parseNormal(html) {
