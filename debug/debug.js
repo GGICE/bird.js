@@ -1,7 +1,7 @@
 import Bird from '../src/bird'
 
 window.DEBUG = true
-var app = new Bird({
+const app = new Bird({
   template: `
     <p>Text: </p>
     <hello-text>1</hello-text>
@@ -10,13 +10,13 @@ var app = new Bird({
     <p>Input: </p>
     <text-input></text-input>
   `,
-  el: '#app'
+  el: '#app',
 })
 
-app.component('hello-text', {
+Bird.component('hello-text', {
   template: `
     <link href="debug/styles.css" rel="stylesheet" title="Default Style">
-    <div class='hello'>{text}</div>`,
+    <div class='hello'>{{data.text}}</div>`,
   styles: `
     div {
       color: red;
@@ -24,13 +24,12 @@ app.component('hello-text', {
     }
   `,
   created() {
-    var that = this
-    setTimeout(function(){
-      that.setData({
-        text: '我发生变化了 haha!'
+    setTimeout(() => {
+      this.setData({
+        text: '我发生变化了 haha!',
       })
       app.trigger('hello', {
-        text: 'hello!'
+        text: 'hello!',
       })
     }, 2000)
   },
@@ -43,35 +42,33 @@ app.component('hello-text', {
   rendered() {
     console.log('rendered!')
   },
-  attributeChanged(name, oldVal, newVal) {
+  attributeChanged() {
 
   },
   data: {
     text: 'Hello Bird.js',
-    test: 'test'
-  }
+    test: 'test',
+  },
 })
 
-app.component('user-list', {
+Bird.component('user-list', {
   template: `
-  <div>
-    {users.map(user => "
-      <t-user b-model={JSON.stringify(user)}></t-user>
-    ")}
-  <div>
+    <div>
+      {{bMap('users', '<t-user b-model={{bString(user)}}></t-user>')}}
+    <div>
   `,
   data: {
     users: [{
-      name: 'test',
-      age: 20
+      name: 'test0',
+      age: 20,
     },
     {
-      name: 'test3',
-      age: 21
-    }]
+      name: 'test1',
+      age: 21,
+    }],
   },
   created() {
-    app.on('hello', function(arg){
+    app.on('hello', (arg) => {
       console.log(arg)
     })
 
@@ -79,10 +76,10 @@ app.component('user-list', {
       this.setData({
         users: [
           {
-            name: 'only',
-            age: 1
-          }
-        ]
+            name: 'n0',
+            age: 1,
+          },
+        ],
       })
     }, 2000)
 
@@ -90,41 +87,41 @@ app.component('user-list', {
       this.setData({
         users: [
           {
-            name: 'only',
-            age: 2
+            name: 'n 1',
+            age: 2,
           },
           {
-            name: 'only',
-            age: 2
+            name: 'n2',
+            age: 2,
           },
           {
-            name: 'only',
-            age: 2
-          }
-        ]
+            name: 'n3',
+            age: 2,
+          },
+        ],
       })
     }, 3000)
-  }
+  },
 })
 
-app.component('t-user', {
+Bird.component('t-user', {
   template: `
-    <p>我叫{name}, 年龄{age}</p>
+    <p>我叫{{bGet('name')}}, 年龄{{bGet('age')}}</p>
   `,
   created() {
-  }
+  },
 })
 
-app.component('text-input', {
+Bird.component('text-input', {
   template: `<div>
-              <input on-keyup={inputChange}>
-              <div>{result || ''}</div>
+              <input on-keyup={{inputChange}}>
+              <div>{{data.result || ''}}</div>
             </div>`,
   data: {
     inputChange(e) {
       this.setData({
-        result: e.target.value
+        result: e.target.value,
       })
-    }
-  }
+    },
+  },
 })

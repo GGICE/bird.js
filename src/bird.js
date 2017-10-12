@@ -5,20 +5,17 @@ class Bird {
     this.wrap = document.querySelector(options.el)
     this.wrap.innerHTML = options.template
     this.customEventHost = document.createElement('div')
-    this.randers()
+    // this.randers()
   }
 
   /**
    * @param {string} template
    * @param {object} data
    */
-  component(name, options) {
+  static component(name, options) {
     class Temp extends Base {
       constructor() {
-        super()
-      }
-      getOptions() {
-        return options
+        super(options)
       }
     }
     customElements.define(name, Temp)
@@ -28,13 +25,13 @@ class Bird {
     this.wrap.innerHTML = template
   }
 
-  randers() {
-    //Do nothing
-  }
+  // randers() {
+  //   // Do nothing
+  // }
 
   on(name, callback) {
     const { customEventHost } = this
-    customEventHost.addEventListener(name, function(e) {
+    customEventHost.addEventListener(name, (e) => {
       e.preventDefault()
       e.stopPropagation()
       callback(e.detail)
@@ -43,8 +40,8 @@ class Bird {
 
   trigger(name, args) {
     const { customEventHost } = this
-    var event = new CustomEvent(name, {
-      'detail': args
+    const event = new CustomEvent(name, {
+      detail: args,
     })
     customEventHost.dispatchEvent(event)
   }

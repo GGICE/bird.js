@@ -5,39 +5,41 @@ class Diff {
    *  1.改  done
    *  2.增  done
    *  3.删  done
-   * 
-   * @param {dom} newDom 
-   * @param {dom} oldDom 
+   *
+   * @param {dom} newDom
+   * @param {dom} oldDom
   */
   static diff(newDom, oldDom) {
+    /* eslint no-continue: "off" */
     if (newDom.innerHTML === oldDom.innerHTML) {
       return logs.log('diff Same!')
     }
-    var oldNodes = this.getEls(oldDom.childNodes)
-    var newNodes = this.getEls(newDom.childNodes)
-    var oldLength = oldNodes.length
-    var newLength = newNodes.length
-    var length = Math.min(newLength, oldLength)
-    var i
-    //ADD TODO: support key
-    if(newLength > oldLength) {
-      for(i = oldLength; i < newLength; i++ ) {
+    const oldNodes = this.getEls(oldDom.childNodes)
+    const newNodes = this.getEls(newDom.childNodes)
+    const oldLength = oldNodes.length
+    const newLength = newNodes.length
+    const length = Math.min(newLength, oldLength)
+    let i
+
+    // ADD TODO: support key
+    if (newLength > oldLength) {
+      for (i = oldLength; i < newLength; i += 1) {
         oldDom.appendChild(newNodes[i])
       }
     }
-    //Remove TODO: support key
-    if(newLength < oldLength) {
-      for(i = oldLength; i > newLength ; i-- ) {
+    // Remove TODO: support key
+    if (newLength < oldLength) {
+      for (i = oldLength; i > newLength; i -= 1) {
         oldDom.removeChild(oldNodes[i - 1])
       }
     }
-    //Change
-    for(i = 0; i < length; i++) {
+    // Change
+    for (i = 0; i < length; i += 1) {
       if (newNodes[i].outerHTML === oldNodes[i].outerHTML) {
         continue
       }
 
-      if(newNodes[i].tagName !== oldNodes[i].tagName) {
+      if (newNodes[i].tagName !== oldNodes[i].tagName) {
         oldDom.replaceChild(newNodes[i], oldNodes[i])
         continue
       }
@@ -48,12 +50,14 @@ class Diff {
         oldDom.replaceChild(newNodes[i], oldNodes[i])
       }
     }
+
+    return true
   }
 
   /**
    * 非阻塞diff
-   * @param {dom} newDom 
-   * @param {dom} oldDom 
+   * @param {dom} newDom
+   * @param {dom} oldDom
    */
   static diffAsyn(newDom, oldDom) {
     return new Promise((resolve) => {
@@ -63,9 +67,7 @@ class Diff {
   }
 
   static getEls(nodeList) {
-    return [].filter.call(nodeList, function(node){
-      return node.nodeType === 1
-    })
+    return [].filter.call(nodeList, node => node.nodeType === 1)
   }
 }
 
