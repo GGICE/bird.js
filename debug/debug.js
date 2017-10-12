@@ -16,7 +16,7 @@ const app = new Bird({
 Bird.component('hello-text', {
   template: `
     <link href="debug/styles.css" rel="stylesheet" title="Default Style">
-    <div class='hello'>{{text}}</div>`,
+    <div class='hello'>{{data.text}}</div>`,
   styles: `
     div {
       color: red;
@@ -54,9 +54,7 @@ Bird.component('hello-text', {
 Bird.component('user-list', {
   template: `
     <div>
-      {{users.map(user => {
-        return '<t-user b-model={{}}></t-user>'
-      })}}
+      {{bMap('users', '<t-user b-model={{bString(user)}}></t-user>')}}
     <div>
   `,
   data: {
@@ -89,7 +87,7 @@ Bird.component('user-list', {
       this.setData({
         users: [
           {
-            name: 'n1',
+            name: 'n 1',
             age: 2,
           },
           {
@@ -108,7 +106,7 @@ Bird.component('user-list', {
 
 Bird.component('t-user', {
   template: `
-    <p>我叫{name}, 年龄{age}</p>
+    <p>我叫{{bGet('name')}}, 年龄{{bGet('age')}}</p>
   `,
   created() {
   },
@@ -117,7 +115,7 @@ Bird.component('t-user', {
 Bird.component('text-input', {
   template: `<div>
               <input on-keyup={{inputChange}}>
-              <div>{{result || ''}}</div>
+              <div>{{data.result || ''}}</div>
             </div>`,
   data: {
     inputChange(e) {

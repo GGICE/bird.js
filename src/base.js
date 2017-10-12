@@ -105,7 +105,7 @@ class Base extends HTMLElement {
   applyAttrToData() {
     let data = this.getAttribute('b-model')
     try {
-      data = JSON.parse(data || '{}')
+      data = JSON.parse((data || '{}').replace(/&nbsp;/g, ' '))
     } catch (e) {
       logs.warn('Have error : ', e)
       data = {}

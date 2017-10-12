@@ -11,7 +11,6 @@ class Diff {
   */
   static diff(newDom, oldDom) {
     /* eslint no-continue: "off" */
-    console.log('Start diff!!!')
     if (newDom.innerHTML === oldDom.innerHTML) {
       return logs.log('diff Same!')
     }
