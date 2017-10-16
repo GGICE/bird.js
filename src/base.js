@@ -55,11 +55,6 @@ class Base extends HTMLElement {
     if (attributeChanged) {
       attributeChanged.apply(this, name, oldVal, newVal)
     }
-    if (oldVal === null && this.initData &&
-      JSON.stringify(this.initData[name]) === newVal) {
-      // 跳过初始时的reRender
-      return
-    }
     this.reRender(name)
   }
 
@@ -69,6 +64,7 @@ class Base extends HTMLElement {
       data,
       created,
       styles,
+      stylesLink,
       rendered,
     } = this.options || {}
 
@@ -82,9 +78,10 @@ class Base extends HTMLElement {
     this.applyAttrToData()
     this.template = template || ''
     this.styles = styles
+    this.stylesLink = stylesLink
     this.rendered = rendered
     this.created = created
-    this.bindAttr()
+    this.applyDataToAttr(this.data)
     this.render()
     this.options = null
   }
@@ -116,16 +113,6 @@ class Base extends HTMLElement {
 
   applyDataToAttr() {
     this.setAttribute('b-data', ID.getNewId())
-  }
-
-  /**
-   * 绑定data到Attribute
-   */
-  bindAttr() {
-    const {
-      data,
-    } = this
-    this.applyDataToAttr(data)
   }
 
   /**
