@@ -1,3 +1,5 @@
+import logs from 'common/logs'
+
 class Btp {
   /**
    * 模板引擎
@@ -10,18 +12,22 @@ class Btp {
   static parse(options) {
     /* eslint no-unused-vars: "warn" */
     const { template, data, styles } = options
+    if (!template) {
+      logs.warn('No template!')
+      return ''
+    }
     let html = template
       .replace(/\r|\f|\n/g, '')
       .replace(/( )+/g, ' ')
 
-    function bMap(name, tp) {
+    function bMap(name, oneName, tp) {
       const mapData = data[name]
+
       if (!mapData.length || mapData.length < 1) {
         return ''
       }
-      return mapData.map(user =>
-        eval(`\`${tp}\``))// eslint-disable-line
-        .join('')
+      return mapData.map(one =>
+        eval(`var ${oneName} = one;\`${tp}\``)).join('') // eslint-disable-line
     }
 
     function bGet(name) {

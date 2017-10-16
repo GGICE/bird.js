@@ -54,7 +54,7 @@ Bird.component('hello-text', {
 Bird.component('user-list', {
   template: `
     <div>
-      {{bMap('users', '<t-user b-model={{bString(user)}}></t-user>')}}
+      {{bMap('users', 'user', '<t-user b-model={{bString(user)}}></t-user>')}}
     <div>
   `,
   data: {
