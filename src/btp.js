@@ -11,7 +11,12 @@ class Btp {
 
   static parse(options) {
     /* eslint no-unused-vars: "warn" */
-    const { template, data, styles } = options
+    const {
+      template,
+      data,
+      styles,
+      stylesLink,
+    } = options
     if (!template) {
       logs.warn('No template!')
       return ''
@@ -54,6 +59,11 @@ class Btp {
     }
     if (styles) {
       html = `<style>${styles}</style>${html}`
+    }
+    if (stylesLink) {
+      stylesLink.forEach((link) => {
+        html = `<link href="${link}" rel="stylesheet">${html}`
+      })
     }
     return html
   }

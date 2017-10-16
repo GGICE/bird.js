@@ -15,18 +15,23 @@ const app = new Bird({
 
 Bird.component('hello-text', {
   template: `
-    <link href="debug/styles.css" rel="stylesheet" title="Default Style">
-    <div class='hello'>{{data.text}}</div>`,
+    <div class='hello'>{{data.isShow ? data.text : 'hidden text'}}</div>`,
   styles: `
     div {
       color: red;
       font-size: 17px;
     }
   `,
+  stylesLink: [
+    'debug/styles.css'
+  ],
+  data: {
+    isShow: false,
+  },
   created() {
     setTimeout(() => {
       this.setData({
-        text: '我发生变化了 haha!',
+        isShow: true,
       })
       app.trigger('hello', {
         text: 'hello!',
