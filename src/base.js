@@ -1,6 +1,6 @@
 import logs from 'common/logs'
 import ID from 'common/id'
-import Btp from './btp'
+import BTP from './btp'
 import Diff from './diff'
 
 class Base extends HTMLElement {
@@ -87,7 +87,7 @@ class Base extends HTMLElement {
   }
 
   parse() {
-    return Btp.parse(this)
+    return BTP.parse(this)
   }
 
   initShadowEL() {

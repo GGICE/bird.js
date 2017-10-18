@@ -1,15 +1,14 @@
 import logs from 'common/logs'
+import filterHtml from 'common/filter-html'
 
-class Btp {
+const BTP = {
   /**
    * 模板引擎
-   * TODO 需要优化匹配
    * TODO XSS 攻击过滤
    *
    * 临时占位符： 'b-@@##'
    */
-
-  static parse(options) {
+  parse(options) {
     /* eslint no-unused-vars: "warn" */
     const {
       template,
@@ -40,7 +39,7 @@ class Btp {
       if (value === undefined) {
         return ''
       }
-      return value
+      return filterHtml.escape(value)
     }
 
     function bString(stringData) {
@@ -48,12 +47,13 @@ class Btp {
       return newString.replace(/ /g, '&nbsp;')
     }
 
-    html = Btp.parseEvent(html)
-    html = Btp.parseNormal(html)
+    html = BTP.parseEvent(html)
+    html = BTP.parseNormal(html)
     html = html.replace(/b-@@##/g, '${')
     html = `\`${html}\``
     try {
       html = eval(html) // eslint-disable-line
+      logs.log('html', html)
     } catch (e) {
       window.console.warn(e)
     }
@@ -66,20 +66,20 @@ class Btp {
       })
     }
     return html
-  }
+  },
 
-  static parseEvent(html) {
+  parseEvent(html) {
     return html.replace(
       /on-\w*={{\w*}}/g,
       $1 => ` ${$1.replace(/{{(\w*)}}/, ($2, $3) => `function[${$3}]`)}`,
     )
-  }
+  },
 
-  static parseNormal(html) {
+  parseNormal(html) {
     return html
       .replace(/{{/g, '${')
       .replace(/}}/g, '}')
-  }
+  },
 }
 
-export default Btp
+export default BTP
