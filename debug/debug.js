@@ -60,10 +60,13 @@ Bird.component('user-list', {
   template: `
     <div>
       {{bMap('users', 'user', '<t-user b-model={{bString(user)}}></t-user>')}}
+      <div>{{bGet('users') && bGet('users').length > 0 ? '' : 'Not find!'}}</div>
     <div>
   `,
   data: {
-    users: [{
+    text: 'Hello',
+    users: [],
+    usersData: [{
       name: 'test0',
       age: 20,
     },
@@ -73,21 +76,6 @@ Bird.component('user-list', {
     }],
   },
   created() {
-    app.on('hello', (arg) => {
-      console.log(arg)
-    })
-
-    setTimeout(() => {
-      this.setData({
-        users: [
-          {
-            name: 'n0',
-            age: 1,
-          },
-        ],
-      })
-    }, 2000)
-
     setTimeout(() => {
       this.setData({
         users: [
@@ -105,13 +93,19 @@ Bird.component('user-list', {
           },
         ],
       })
-    }, 3000)
+    }, 1000)
+
+    setTimeout(() => {
+      this.setData({
+        text: 'New message!'
+      })
+    }, 2000)
   },
 })
 
 Bird.component('t-user', {
   template: `
-    <p>我叫{{bGet('name')}}, 年龄{{bGet('age')}}</p>
+    <p>Name: {{bGet('name')}}, Age:  {{bGet('age')}}</p>
   `,
   created() {
   },
