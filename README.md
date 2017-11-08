@@ -1,5 +1,5 @@
 # bird.js
-A web components lib.
+A web view lib base on components.
 
 ## DEMO
 
@@ -12,3 +12,6 @@ Build depend on：
 ```
 npm install uglify-es -g
 ```
+## USE
+
+see `debug/debug.js`

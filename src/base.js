@@ -115,9 +115,6 @@ class Base extends HTMLElement {
     this.setAttribute('b-data', ID.getNewId())
   }
 
-  /**
-   * 操作data的方法
-   */
   setData(data) {
     this.data = Object.assign(this.data, data)
     this.applyDataToAttr(data)
@@ -142,7 +139,7 @@ class Base extends HTMLElement {
   }
 
   /**
-   * 绑定事件的方法，需要在render之后执行
+   * Bind events，after render
    */
   bindEvents() {
     const els = this.shadow
