@@ -1,13 +1,10 @@
 import logs from 'common/logs'
 import filterHtml from 'common/filter-html'
 
+/**
+ * Template processor
+ */
 const BTP = {
-  /**
-   * 模板引擎
-   * TODO XSS 攻击过滤
-   *
-   * 临时占位符： 'b-@@##'
-   */
   parse(options) {
     /* eslint no-unused-vars: "warn" */
     const {

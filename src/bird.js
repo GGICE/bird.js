@@ -5,7 +5,6 @@ class Bird {
     this.wrap = document.querySelector(options.el)
     this.wrap.innerHTML = options.template
     this.customEventHost = document.createElement('div')
-    // this.randers()
   }
 
   /**
@@ -24,10 +23,6 @@ class Bird {
   setTemplate(template) {
     this.wrap.innerHTML = template
   }
-
-  // randers() {
-  //   // Do nothing
-  // }
 
   on(name, callback) {
     const { customEventHost } = this

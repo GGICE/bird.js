@@ -2,10 +2,6 @@ import logs from 'common/logs'
 
 class Diff {
   /**
-   *  1.改  done
-   *  2.增  done
-   *  3.删  done
-   *
    * @param {dom} newDom
    * @param {dom} oldDom
   */
