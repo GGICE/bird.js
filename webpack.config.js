@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    Bird: './src/bird.js'
+    debug: './debug/debug.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
