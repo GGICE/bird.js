@@ -3,7 +3,8 @@ A web view lib base on components.
 
 ## DEMO
 
-[bird.js](https://ggice.github.io/bird.js/)
+[BIRD.JS](https://ggice.github.io/bird.js/)  ([source code](https://github.com/GGICE/bird.js/blob/master/debug/debug.js))
+
 
 ## DEV
 
