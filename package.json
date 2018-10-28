@@ -10,7 +10,8 @@
   "dependencies": {
     "eslint": "^4.7.1",
     "eslint-config-airbnb-base": "^12.0.0",
-    "eslint-plugin-import": "^2.7.0"
+    "eslint-plugin-import": "^2.7.0",
+    "uglify-es": "^3.3.9"
   },
   "scripts": {
     "build": "webpack --progress --profile --colors && uglifyjs --compress --mangle --output ./dist/bird.js -- ./dist/bird.js",

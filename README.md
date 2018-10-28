@@ -3,15 +3,12 @@ A web view lib base on components.
 
 ## DEMO
 
-[webs.zone](https://webs.zone)
+[bird.js](https://ggice.github.io/bird.js/)
 
 ## DEV
 
-Build depend on：
+`npm run dev`
 
-```
-npm install uglify-es -g
-```
 ## USE
 
 see `debug/debug.js`
